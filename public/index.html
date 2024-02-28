@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NodeJS Weather App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Stay Informed, Stay Prepared: Your Instant Weather Hub for Every Moment</h1>
+    <form id="weatherForm">
+        <input type="text" id="cityInput" placeholder="Enter city name">
+        <button type="submit"><b>Get Weather</b></button>
+    </form>
+    <div id="weatherInfo"></div>
+
+    <script>
+        document.getElementById('weatherForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const city = document.getElementById('cityInput').value;
+            try {
+                const response = await fetch(`/weather?city=${city}`);
+                const data = await response.json();
+                document.getElementById('weatherInfo').innerHTML = `
+                    <h2>${data.city}</h2>
+                    <p>Temperature: ${data.temperature} °C</p>
+                    <p>Description: ${data.description}</p>
+                `;
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+                document.getElementById('weatherInfo').innerHTML = `<p>Error fetching weather data</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
